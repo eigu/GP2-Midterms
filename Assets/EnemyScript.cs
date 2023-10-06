@@ -4,43 +4,27 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
+    public List<GameObject> enemyColor;
+    public GameObject enemy;
     public float enemySpeed;
-    public Transform target;
+    public Transform targetPlayer;
+
 
     void Awake()
     {
-        
+        enemy = enemyColor[Random.Range(0, enemyColor.Count)];
+        enemy.SetActive(true);
     }
 
     void Update()
     {
         var step = enemySpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position,
-        target.position, step);
+        targetPlayer.position, step);
 
-        if (Vector3.Distance(transform.position, target.position) < 0.001f)
+        if (Vector3.Distance(transform.position, targetPlayer.position) < 0.001f)
         {
-        target.position *= -1.0f;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Red"))
-        {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
-        }
-
-        
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+        targetPlayer.position *= -1.0f;
         }
     }
 }

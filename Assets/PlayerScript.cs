@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -8,12 +7,24 @@ public class PlayerScript : MonoBehaviour
     public List<GameObject> playerColor;
     public GameObject player;
     public int playerColorCount = 0;
-    public Transform target;
-    public float range = 30f;
+    
+    public int vertexCount = 40;
+    public float lineWidth = 0.5f;
+    public float range;
+    public LineRenderer line;
+
+    
+    public List<GameObject> enemyList;
+    public GameObject enemyTarget;
+    public int enemyCount;
 
     void Awake()
     {
+        enemyCount = 0;
+
         player = playerColor[playerColorCount++];
+
+        line = GetComponent<LineRenderer>();
     }
 
     void Update()
@@ -23,11 +34,7 @@ public class PlayerScript : MonoBehaviour
             ChangePlayerColor();
         }
 
-        Vector3 relativePos = target.position - transform.position; 
-        if (relativePos.magnitude < range)
-        {
-            transform.rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-        }
+        CreateCircle();
     }
 
     public void ChangePlayerColor()
@@ -42,20 +49,37 @@ public class PlayerScript : MonoBehaviour
         player.SetActive(true);
     }
 
-    private void OnDrawGizmos()
+    private void CreateCircle()
     {
-        float radius = range;
+        line.widthMultiplier = lineWidth;
 
-        float angleStep = 360f / 360;
+        float deltaTheta  = 2f * Mathf.PI / vertexCount;
+        float theta = 0f;
 
-        Gizmos.color = Color.white;
-        for (int i = 0; i < 360; i++)
+        line.positionCount = vertexCount;
+        for (int i = 0; i < line.positionCount; i++)
         {
-            float angle = i * angleStep;
+            Vector3 pos = new Vector3(range * Mathf.Cos(theta), 0f, range * Mathf.Sin(theta));
+            line.SetPosition(i, pos);
+            theta += deltaTheta;
+        }
+    }
 
-            Vector3 position = transform.position + radius * Vector3.right * Mathf.Cos(angle) + radius * Vector3.forward * Mathf.Sin(angle);
+    private void AimAtEnemy()
+    {
+        enemyTarget = enemyList[enemyCount];
+        Vector3 relativePos = enemyTarget.transform.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        transform.rotation = rotation;
+    }
 
-            Gizmos.DrawLine(position, position + Vector3.right * 0.1f);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            enemyList.Add(other.gameObject);
+            AimAtEnemy();
+            enemyCount++;
         }
     }
 }

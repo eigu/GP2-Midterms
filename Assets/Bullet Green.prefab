@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 133095883902493742}
   - component: {fileID: 2148594411057074415}
   - component: {fileID: 7691470433317026998}
+  - component: {fileID: -215490183150107902}
   m_Layer: 0
   m_Name: Bullet Green
   m_TagString: Green
@@ -133,3 +134,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-215490183150107902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5528736792834313227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a119264eda35b4baf3ac17e9c821b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
