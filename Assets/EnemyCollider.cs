@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class EnemyCollider : MonoBehaviour
 {
+    public GameObject enemy;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Red") && CompareTag("Red") || other.CompareTag("Green") && CompareTag("Green") || other.CompareTag("Blue") && CompareTag("Blue"))
+        if (other.tag == gameObject.tag)
         {
             Destroy(other.gameObject);
-            Destroy(gameObject);
+            Destroy(enemy.gameObject);
         }
         else if (other.CompareTag("Player"))
         {

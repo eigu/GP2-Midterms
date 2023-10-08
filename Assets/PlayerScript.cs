@@ -68,9 +68,9 @@ public class PlayerScript : MonoBehaviour
     private void AimAtEnemy()
     {
         enemyTarget = enemyList[enemyCount];
-        Vector3 relativePos = enemyTarget.transform.position - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-        transform.rotation = rotation;
+        Vector3 relativePos = enemyTarget.transform.position;
+        relativePos.y = transform.position.y;
+        transform.LookAt(relativePos);
     }
 
     private void OnTriggerEnter(Collider other)
